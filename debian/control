@@ -1,0 +1,14 @@
+Source: vzdump
+Section: admin
+Priority: extra
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.1
+Homepage: http://www.proxmox.com/cms_proxmox/en/virtualization/openvz/vzdump/
+
+Package: vzdump
+Architecture: all
+Depends: perl, vzctl, cstream, rsync, liblockfile-simple-perl, exim4 | mail-transport-agent, ${shlibs:Depends}, ${misc:Depends}
+Suggests: xdelta
+Description: OpenVZ backup scripts
+ This package contains the vzdump script to backup and restore openvz images.

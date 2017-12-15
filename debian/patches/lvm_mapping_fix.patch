@@ -1,0 +1,11 @@
+--- /usr/share/perl5/PVE/VZDump-old.pm	2010-06-28 11:15:10.000000000 +0000
++++ /usr/share/perl5/PVE/VZDump.pm	2010-06-28 11:15:35.000000000 +0000
+@@ -616,7 +616,7 @@
+ 
+     my $devmapper;
+ 
+-    my $cmd = "lvs --units m --separator ':' --noheadings -o vg_name,lv_name,lv_size";
++    my $cmd = "lvs --units M --separator ':' --noheadings -o vg_name,lv_name,lv_size";
+     if (my $fd = IO::File->new ("$cmd 2>/dev/null|")) {
+ 	while (my $line = <$fd>) {
+ 	    if ($line =~ m|^\s*(\S+):(\S+):(\d+(\.\d+))M$|) {

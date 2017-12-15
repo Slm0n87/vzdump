@@ -1,0 +1,106 @@
+vzdump (1.2.6-5) unstable; urgency=low
+
+  * Maintainer changed to Debian QA Team.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 04 Sep 2017 22:10:37 +0200
+
+vzdump (1.2.6-4) unstable; urgency=low
+
+  * Simplified rules file significantly.
+  * Updated to debhelper compatibility 9.
+
+ -- Ola Lundqvist <opal@debian.org>  Sun, 11 Sep 2016 22:15:49 +0200
+
+vzdump (1.2.6-3) unstable; urgency=low
+
+  * Correction to make it work also with LVM snapshots. Closes: #666064.
+    Thanks to Martin Pircher <debianbugs@donotreply.at> for the report
+    and patch.
+  * Updated to standards version 3.9.1.
+  * Changed from dh_clean -k to dh_prep.
+
+ -- Ola Lundqvist <opal@debian.org>  Sat, 07 Apr 2012 14:36:48 +0200
+
+vzdump (1.2.6-2) unstable; urgency=low
+
+  * CTID is no longer hardcoded in OpenVZ.pm. Closes: #645727. Thanks to
+    Jakov Curic <jakov.curic@h1telekom.hr> for the patch.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue, 18 Oct 2011 08:00:30 +0200
+
+vzdump (1.2.6-1) unstable; urgency=low
+
+  * New upstream release.
+  * Applied patch from Patrick Ringl <patrick_@freenet.de> that solves a
+    problem with LVM2 detection. Closes: #587407.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 22 Jul 2010 21:33:07 +0200
+
+vzdump (1.2.4-2) unstable; urgency=low
+
+  * URL in watch file and control file updated.
+  * Dependencies updated to reflect the need in the rewritten package.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue, 10 Nov 2009 07:24:04 +0100
+
+vzdump (1.2.4-1) unstable; urgency=low
+
+  * New upstream release.
+    This is a complete rewrite of the software according to upstream.
+    The upstream version is called 1.2-4.
+
+ -- Ola Lundqvist <opal@debian.org>  Sat, 07 Nov 2009 14:02:48 +0100
+
+vzdump (1.0-3) unstable; urgency=low
+
+  * Initial release (Closes: #503147)
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 06 Apr 2009 20:39:07 +0200
+
+vzdump (1.0-2) unstable; urgency=low
+
+  * bug fix in config parser
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 28 Jun 2007 11:38:06 +0200
+
+vzdump (1.0-1) stable; urgency=low
+
+  * set version number to 1.0, because we are quite stable
+  
+  * added copyright notice to man page
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 10 May 2007 09:50:01 +0200
+
+vzdump (0.4-1) unstable; urgency=low
+
+  * also read config of VEs with ID > 999
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 26 Mar 2007 09:05:28 +0200
+
+vzdump (0.3-1) unstable; urgency=low
+
+  * merged in patch from Kir Kolyshkin (rpm related changes)
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Mar 2007 08:35:55 +0100
+
+vzdump (0.2-2) unstable; urgency=low
+
+  * changed package dependency (perl > 5.6.0-16, vzdump)
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 21 Mar 2007 10:42:10 +0100
+
+vzdump (0.2-1) stable; urgency=low
+
+  * dm2 snapshot support 
+  
+  * many bug fixes
+  
+  * new manual page
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 19 Mar 2007 11:10:25 +0100
+
+vzdump (0.1-1) stable; urgency=low
+
+  * first release
+  
+ -- Proxmox Support Team <support@proxmox.com>  Wed,  7 Mar 2007 16:20:48 +0100

@@ -1,0 +1,9 @@
+vzdump for Debian
+-----------------
+
+Changed default vz directory from /vz to /var/lib/vz to be compliant with
+the Debian version of vzctl and to be FHS compliant.
+
+Also the vzdump utility is located in /usr/sbin instead of /usr/bin.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 06 Apr 2009 20:39:07 +0200

@@ -1,0 +1,91 @@
+vzdump (1.2-6) unstable; urgency=low
+
+  * vzrestore: new --force option to overwrite existing data
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 20 May 2010 11:13:48 +0200
+
+vzdump (1.2-5) unstable; urgency=low
+
+  * re-added missing liblockfile-simple-perl
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 23 Oct 2009 08:55:00 +0200
+
+vzdump (1.2-4) unstable; urgency=low
+
+  * correctly detect rsync command (avoid backup to fail when files
+    vanished before they could be transferred)
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Oct 2009 10:01:32 +0200
+
+vzdump (1.2-3) unstable; urgency=low
+
+  * correctly handle '$VEID' macro in config files (VE_ROOT, VE_PRIVATE).
+
+  * don't cross filesystem boundaries with OpenVZ backups (bind mount are
+    no longer included).
+  
+  * support hook scripts (new --script option)
+  
+  * new naming scheme - include date/time into file names.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 12 Oct 2009 12:50:18 +0200
+
+vzdump (1.2-2) unstable; urgency=low
+
+  * new storage option for PVE 
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 21 Sep 2009 11:36:01 +0200
+
+vzdump (1.2-1) unstable; urgency=low
+
+  * complete rewrite
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 1 Sep 2009 11:00:06 +0200
+
+vzdump (1.0-2) unstable; urgency=low
+
+  * bug fix in config parser
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 28 Jun 2007 11:38:06 +0200
+
+vzdump (1.0-1) stable; urgency=low
+
+  * set version number to 1.0, because we are quite stable
+  
+  * added copyright notice to man page
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 10 May 2007 09:50:01 +0200
+
+vzdump (0.4-1) unstable; urgency=low
+
+  * also read config of VEs with ID > 999
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 26 Mar 2007 09:05:28 +0200
+
+vzdump (0.3-1) unstable; urgency=low
+
+  * merged in patch from Kir Kolyshkin (rpm related changes)
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Mar 2007 08:35:55 +0100
+
+vzdump (0.2-2) unstable; urgency=low
+
+  * changed package dependency (perl > 5.6.0-16, vzdump)
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 21 Mar 2007 10:42:10 +0100
+
+vzdump (0.2-1) stable; urgency=low
+
+  * dm2 snapshot support 
+  
+  * many bug fixes
+  
+  * new manual page
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 19 Mar 2007 11:10:25 +0100
+
+vzdump (0.1-1) stable; urgency=low
+
+  * first release
+  
+ -- Proxmox Support Team <support@proxmox.com>  Wed,  7 Mar 2007 16:20:48 +0100

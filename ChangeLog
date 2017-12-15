@@ -1,0 +1,211 @@
+2010-05-20  Proxmox Support Team  <support@proxmox.com>
+
+	* vzrestore (restore_openvz): new --force option to overwrite
+	existing data (patch from gilles)
+
+2009-10-22  Proxmox Support Team  <support@proxmox.com>
+
+	* VZDump.pm (run_command): correctly detect rsync command (avoid
+	backup to fail when files vanished before they could be
+	transferred )
+
+2009-10-19  Proxmox Support Team  <support@proxmox.com>
+
+	* vzrestore (restore_openvz): correctly handle '$VEID' macro in
+	config files (VE_ROOT, VE_PRIVATE).
+
+	* OpenVZ.pm (read_global_vz_config): do not substitute $VEID
+
+2009-10-13  Proxmox Support Team  <support@proxmox.com>
+
+	* OpenVZ.pm (read_vz_list): use -x (don't cross filesystem
+	boundaries) for rsync
+	(archive): also use --one-file-system for tar
+
+	* VZDump.pm (run_hook_script): support for new --script option
+
+	* hook-script.pl: example hook script 
+
+2009-10-12  Proxmox Support Team  <support@proxmox.com>
+
+	* VZDump.pm (exec_backup_task): also remove old log files
+
+2009-10-09  Proxmox Support Team  <support@proxmox.com>
+
+	* VZDump.pm: encode backup time in backup filenames
+
+2009-09-21  Proxmox Support Team  <support@proxmox.com>
+
+	* VZDump.pm (storage_info): new --storage option for PVE 
+
+2009-09-08  Proxmox Support Team  <support@proxmox.com>
+
+	* Makefile (vmtar, sparsecp, qmrestore): moved the QemuServer
+	related code to the qemu-server package.
+
+2009-09-07  Proxmox Support Team  <support@proxmox.com>
+
+	* Makefile (PACKAGE): increase version to 1.2-1
+
+	* sparsecp.c: small utility to copy stdin to a file preserving
+	holes (sparse copy).
+
+2009-09-03  Proxmox Support Team  <support@proxmox.com>
+
+	* vzrestore: split out restore code into new binary 
+
+	* qmrestore: split out restore code into new binary 
+
+2009-09-02  Proxmox Support Team  <support@proxmox.com>
+
+	* OpenVZ.pm (prepare): delay loading config file to this stage.
+
+	* OpenVZ.pm (lock_vm): set lock during backup
+
+	* vzdump.spec.in (Requires): add perl-LockFile-Simple
+		
+	* control (Depends): add  liblockfile-simple-perl
+
+	* vmtar.c: tar like utility to backup devices.
+
+	* OpenVZ.pm (prepare): use same snapshot name as with
+	QemuServer.pm ("vzsnap-$hostname-0").
+
+	* VZDump.pm: we now try to avoid using /var/tmp as temporary storage
+	whenever possible. Only use /var/tmp when dumpdir is no posix
+	filesystem (or when user explicit specifies --tmpdir).
+
+2009-08-31  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump.spec.in (Requires): replace MTA with smtpdaemon
+
+2009-08-25  Proxmox Support Team  <support@proxmox.com>
+
+	* rewrite: new plugin architecture. This way we can support plain
+	OpenVZ system, but also use QemuServer and other libraries on PVE.
+
+	* Plugin.pm: the base class for plugins.
+
+	* VZDump.pm: contains common code and control logic.
+
+	* OpenVZ: The OpenVZ plugin.
+	
+	* QemuServer: The PVE QemuServer plugin.
+	
+	* VZDump.pm (read_vzdump_defaults): use snapshot mode by default
+	(it is no longer possible to make online backups without
+	stop/suspend/snapshot)
+
+2009-08-03  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump: set LANG=C to avoid locale warnings
+
+2009-05-29  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (get_lvm_device): also return filesystem type
+	(snapshot_vm): always mount with '-t $fstype', pass "-o nouuid"
+	for xfs filesystems.
+	(get_lvm_mapping): use ':' as separator 
+
+2008-09-17  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (snapshot_vm): use --no-whole-file --inplace for rsync (works
+	better for large files), also use --stats --numeric-id and
+	apply bandwidth limits with --bwlimit 
+	(archive_vm): use --sparse option for tar
+
+	* vzdump: support to backup/restore qemu-server images
+
+	* vzdump: new --stdexcludes option (we no longer exclude files by
+	default, because most usres expect to have a full backup including
+	all files and logs)
+
+	* vzdump: add --tmpdir option as suggested by Ugo Bellavance
+	
+	* vzdump: add --wait option, using locbal lock file to
+	make sure only one instance is running
+	
+	* vzdump: set default snapshot size to 1GB, new --size option to
+	specify snapshot size
+
+	* copyright: fixed fsf address
+
+	* Makefile (SBINDIR): set to /usr/sbin (command is only useful for 
+	user root)
+
+	* vzdump.spec.in, control.in: we now depend on rsync, cstream and MTA
+
+2008-09-16  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (read_vzdump_defaults): added global configuration file.
+
+2008-08-18  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump: added --node option (proxmox ve cluster support),
+	use --rsyncable for compressed files
+	removed --xdelta option 
+
+2007-06-28  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump: use values of vz.conf if no private/root dir specified
+	in XXX.conf
+
+2007-05-25  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (run_command): better parser
+	(read_global_config): improved parser
+	(send_mail): allow multiple receivers (multiple --mailto options)
+	(send_mail): add additional status infos
+
+2007-05-24  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (send_mail): generate nicer mails
+
+2007-05-21  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump: new --exclude-path option, use 'find' to avoid tar
+	sockets warnings, try to skip all log files by default, use tar
+	option --ignore-failed-read
+
+2007-05-10  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump: additionally log time, new --exclude option (suggested
+	by Ugo Bellavance)
+
+2007-04-04  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (get_device): use -P with df (fixes bug reported by
+	Jernej Proenta)
+
+2007-03-26  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (read_global_config): read config of VEs >= 1000
+	- issue warning when doing backup without suspend/snapshot
+
+2007-03-22  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump.spec.in: new file from Kir Kolyshkin
+	
+	* Makefile: merged in patch from Kir Kolyshkin
+	- use rpmbuild instead of alien
+	- removed install-deb and install-rpm target
+	- added standard install target
+	- renamed source package to vzdump-${VERSION}.tar.gz
+
+2007-03-21  Proxmox Support Team  <support@proxmox.com>
+
+	* vzdump (read_global_config): remove
+	/vz/private/$VEID/etc/vpsdump after backup (bug reported by
+	Thorsten Schifferdecker)
+	(check_bin): find correct path (bug reported by
+	Thorsten Schifferdecker)
+	(debugmsg): support IDs > 999
+
+2007-03-20  Proxmox Support Team  <support@proxmox.com>
+
+	* Makefile: fix TGZ package 
+
+2007-03-07  Proxmox Support Team  <support@proxmox.com>
+
+	* Makefile: first try 
+
