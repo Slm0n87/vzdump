@@ -53,6 +53,7 @@ my @std_opts = (
 		'stop',
 		'suspend',
 		'snapshot',
+		'noarch',
 		'size=i',
 		'node=i',
 		'bwlimit=i',
@@ -75,6 +76,7 @@ sub print_usage {
     print STDERR "\t--exclude-path REGEX\texclude certain files/directories\n";     print STDERR "\t--stdexcludes\t\texclude temorary files and logs\n\n";
  
     print STDERR "\t--compress\t\tcompress dump file (gzip)\n";
+    print STDERR "\t--noarch\t\tdo not create a tar-archive, just rsync files into a directory\n";
     print STDERR "\t--dumpdir DIR\t\tstore resulting files in DIR\n";
     print STDERR "\t--maxfiles N\t\tmaximal number of backup files per VM\n";
     print STDERR "\t--script FILENAME\texecute hook script\n"; 

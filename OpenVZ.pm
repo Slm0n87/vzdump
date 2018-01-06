@@ -223,7 +223,7 @@ sub prepare {
 	$task->{snapdir} =~ s|/?$lvmpath/?|$diskinfo->{mountpoint}/|;
     
     } elsif ($mode eq 'suspend') {
-	$task->{snapdir} = $task->{tmpdir};
+	$task->{snapdir} = $task->{syncdir};
     } else {
 	$task->{snapdir} = $dir;
     }
@@ -350,7 +350,7 @@ sub archive {
 
     my $taropts = "--totals --sparse --numeric-owner --no-recursion --ignore-failed-read --one-file-system";
 
-    if ($snapdir eq $task->{tmpdir} && $snapdir =~ m|^$opts->{dumpdir}/|) {
+    if ($snapdir eq $task->{syncdir} && $snapdir =~ m|^$opts->{dumpdir}/|) {
 	$taropts .= " --remove-files"; # try to save space
     }
 

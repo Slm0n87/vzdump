@@ -1,3 +1,10 @@
+2018-01-06  Simon Stier <github@sist-it.de>
+
+	* vzdump: add option --noarch.
+	--noarch did not create a tar archive but keeps the resulting
+  dump into a directory
+  this allows real incremental backups
+
 2010-05-20  Proxmox Support Team  <support@proxmox.com>
 
 	* vzrestore (restore_openvz): new --force option to overwrite

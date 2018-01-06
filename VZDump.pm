@@ -283,8 +283,8 @@ sub read_vzdump_defaults {
 	next if $line =~ m/^\s*$/;
 	next if $line =~ m/^\#/;
 
-	if ($line =~ m/tmpdir:\s*(.*\S)\s*$/) {
-	    $res->{tmpdir} = $1;
+	if ($line =~ m/syncdir:\s*(.*\S)\s*$/) {
+	    $res->{syncdir} = $1;
 	} elsif ($line =~ m/dumpdir:\s*(.*\S)\s*$/) {
 	    $res->{dumpdir} = $1;
 	} elsif ($line =~ m/storage:\s*(\S+)\s*$/) {
@@ -556,7 +556,7 @@ sub new {
     $opts->{mode} = 'snapshot' if $opts->{snapshot};
 
     $opts->{dumpdir} =~ s|/+$|| if ($opts->{dumpdir});
-    $opts->{tmpdir} =~ s|/+$|| if ($opts->{tmpdir});
+    $opts->{syncdir} =~ s|/+$|| if ($opts->{syncdir});
 
     my $self = bless { cmdline => $cmdline, opts => $opts };
 
@@ -604,8 +604,8 @@ sub new {
 	die "internal error"; 
     }
 
-    if ($opts->{tmpdir} && ! -d $opts->{tmpdir}) {
-	die "tmpdir '$opts->{tmpdir}' does not exist\n";
+    if ($opts->{syncdir} && ! -d $opts->{syncdir}) {
+	die "syncdir '$opts->{syncdir}' does not exist\n";
     }
 
     return $self;
@@ -785,25 +785,31 @@ sub exec_backup_task {
 
 	unlink $task->{tmptar};
 
-	if ($opts->{tmpdir}) {
-	    $task->{tmpdir} = "$opts->{tmpdir}/vzdumptmp$$"; 
+	if ($opts->{noarch}) {
+	    $task->{syncdir} = "$opts->{dumpdir}/${bkname}";
+	} elsif ($opts->{syncdir}) {
+	    $task->{syncdir} = "$opts->{syncdir}/vzdumptmp$$"; 
 	} else {
 	    # dumpdir is posix? then use it as temporary dir
 	    my $info = get_mount_info ($opts->{dumpdir});
 	    if ($vmtype eq 'qemu' || 
 		grep ($_ eq $info->{fstype}, @posix_filesystems)) {
-		$task->{tmpdir} = "$opts->{dumpdir}/$basename.tmp";
+		$task->{syncdir} = "$opts->{dumpdir}/$basename.tmp";
 	    } else {
-		$task->{tmpdir} = "/var/tmp/vzdumptmp$$";
+		$task->{syncdir} = "/var/tmp/vzdumptmp$$";
 		debugmsg ('info', "filesystem type on dumpdir is '$info->{fstype}' -" .
-			  "using $task->{tmpdir} for temporary files", $logfd);
+			  "using $task->{syncdir} for temporary files", $logfd);
 	    }
 	}
 
-	rmtree $task->{tmpdir};
-	mkdir $task->{tmpdir};
-	-d $task->{tmpdir} ||
-	    die "unable to create temporary directory '$task->{tmpdir}'";
+	if ($opts->{noarch}) {
+	  # keep existing dir for fast syncing
+        } else {
+	  rmtree $task->{syncdir};
+	}
+	mkdir $task->{syncdir};
+	-d $task->{syncdir} ||
+	    die "unable to create temporary directory '$task->{syncdir}'";
 
 	$logfd = IO::File->new (">$tmplog") ||
 	    die "unable to create log file '$tmplog'";
@@ -927,17 +933,21 @@ sub exec_backup_task {
 	# assemble archive image
 	$plugin->assemble ($task, $vmid);
 	
-	# produce archive 
-	debugmsg ('info', "creating archive '$task->{tarfile}'", $logfd);
-	$plugin->archive ($task, $vmid, $task->{tmptar});
+	if ($opts->{noarch}) {
+	    # do not create archive
+	} else {
+	    # produce archive 
+	    debugmsg ('info', "creating archive '$task->{tarfile}'", $logfd);
+	    $plugin->archive ($task, $vmid, $task->{tmptar});
 
-	rename ($task->{tmptar}, $task->{tarfile}) ||
-	    die "unable to rename '$task->{tmptar}' to '$task->{tarfile}'\n";
+	    rename ($task->{tmptar}, $task->{tarfile}) ||
+	        die "unable to rename '$task->{tmptar}' to '$task->{tarfile}'\n";
 
-	# determine size
-	$task->{size} = (-s $task->{tarfile}) || 0;
-	my $cs = format_size ($task->{size}); 
-	debugmsg ('info', "archive file size: $cs", $logfd);
+	    # determine size
+	    $task->{size} = (-s $task->{tarfile}) || 0;
+	    my $cs = format_size ($task->{size}); 
+	    debugmsg ('info', "archive file size: $cs", $logfd);
+	}
 
 	# purge older backup
 
@@ -1010,7 +1020,7 @@ sub exec_backup_task {
     eval { unlink $task->{tmptar} if $task->{tmptar} && -f $task->{tmptar}; };
     warn $@ if $@;
 
-    eval { rmtree $task->{tmpdir} if $task->{tmpdir} && -d $task->{tmpdir}; };
+    eval { rmtree $task->{syncdir} if $task->{syncdir} && -d $task->{syncdir} && ! $opts->{noarch}; };
     warn $@ if $@;
 
     my $delay = $task->{backuptime} = time () - $vmstarttime;
