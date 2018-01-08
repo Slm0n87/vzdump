@@ -94,7 +94,14 @@ sub restore_openvz {
 	mkpath $private || die "unable to create private dir '$private'";
 	mkpath $root || die "unable to create private dir '$private'";
 
-	my $cmd = "tar xpf $archive --totals --sparse -C $private";
+	my $cmd = '';
+	if (-d $archive && -f $archive.'/etc/vzdump/vps.conf') {
+	    $cmd = "rsync --stats -x --numeric-ids -aH --delete --no-whole-file --inplace '$archive/' '$private'";
+	} elsif (-d $archive) {
+	    die $archive.'/etc/vzdump/vps.conf is missing';
+	} else {
+	    $cmd = "tar xpf $archive --totals --sparse -C $private";
+	}
 
 	debugmsg ('info', "extracting archive '$archive'");
 
@@ -134,10 +141,13 @@ sub restore_openvz {
 
 my $plugin = PVE::VZDump::OpenVZ->new();
 
-my $firstfile = PVE::VZDump::read_firstfile ($archive);
-if ($firstfile eq 'qemu-server.conf') {
-    die "ERROR: please use 'qmrestore' to restore QemuServer VMs\n";
+if (-f $archive ) {
+    my $firstfile = PVE::VZDump::read_firstfile ($archive);
+    if ($firstfile eq 'qemu-server.conf') {
+        die "ERROR: please use 'qmrestore' to restore QemuServer VMs\n";
+    }
 }
+
 
 my $lock = $plugin->lock_vm ($vmid);
 
