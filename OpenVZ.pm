@@ -324,7 +324,11 @@ sub assemble {
 
     my $dir = $task->{snapdir};
 
-    $task->{cleanup}->{etc_vzdump} = 1;
+    if ($self->{vzdump}->{opts}->{noarch}) {
+        $task->{cleanup}->{etc_vzdump} = 0;
+    } else {
+        $task->{cleanup}->{etc_vzdump} = 1;
+    }
 	
     mkpath "$dir/etc/vzdump/";
     $self->cmd ("cp '$conffile' '$dir/etc/vzdump/vps.conf'");
@@ -380,7 +384,6 @@ sub cleanup {
 	eval { rmtree $dir if -d $dir; };
 	$self->logerr ($@) if $@;
     }
-
 }
 
 1;
