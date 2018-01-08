@@ -49,6 +49,7 @@ my @std_opts = (
 		'stdexcludes',
 		'compress',
 		'mailto=s@',
+		'mail-error-only',
 		'quiet',
 		'stop',
 		'suspend',
@@ -84,6 +85,7 @@ sub print_usage {
     print STDERR "\t--tmpdir DIR\t\tstore temporary files in DIR\n\n";
 
     print STDERR "\t--mailto EMAIL\t\tsend notification mail to EMAIL.\n";
+    print STDERR "\t--mail-error-only\t\tsend notification only on error.\n";
     print STDERR "\t--quiet\t\t\tbe quiet.\n";
     print STDERR "\t--stop\t\t\tstop/start VM if running\n";
     print STDERR "\t--suspend\t\tsuspend/resume VM when running\n";
@@ -189,6 +191,9 @@ vzdump OPTIONS [--all | <VMID>]
 --mailto EMAIL          send notification mail to EMAIL. You can use 
                         this option more than once to specify multiple 
                         receivers
+
+--mail-error-only       send notification mail to address(es) defined by
+                        --mailto only if at least one dump failed.
 
 --stop                  stop/start VM if running
 

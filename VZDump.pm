@@ -370,6 +370,9 @@ my $sendmail = sub {
 	    $task->{msg} = 'aborted';
 	}
     }
+    if ($opts->{'mail-error-only'} && $ecount == 0){
+        return;
+    }
 
     my $stat = $ecount ? 'backup failed' : 'backup successful';
 
